@@ -39,7 +39,7 @@ jobs:
       - name: test
         run: |
           ls ./
-          cat utils/v2dl3-vegas.yml
+          cat .github/workflows/CI.yml
 
       #- name: flake8
       - name: Checkout main branch
@@ -50,7 +50,7 @@ jobs:
       - name: test2
         run: |
           ls ./
-          cat utils/v2dl3-vegas.yml
+          cat .github/workflows/CI.yml
 
       # Runs a single command using the runners shell
       # - name: Pull docker image
