@@ -40,19 +40,26 @@ jobs:
       # Runs a single command using the runners shell
       - name: Pull docker image
         run: |
-          docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD \
-          && docker pull $DOCKER_IMAGE
+          docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD
+          docker pull $DOCKER_IMAGE
 
       - name: Install new branch and generate .fits outputs
         run: |
-          docker run -p 80:80 -v $GITHUB_WORKSPACE:/V2DL3 $DOCKER_IMAGE /bin/bash -c \
-          "cd V2DL3 && bash utils/vegas_docker_test_runs.sh OUTDIR=$NEW_DIR"
+          docker run -p 80:80 -v $GITHUB_WORKSPACE:/V2DL3 $DOCKER_IMAGE /bin/bash -c "\
+          cd V2DL3 \
+          && bash utils/vegas_docker_test_runs.sh OUTDIR=$NEW_DIR \
+          "
 
       - name: Install main branch and generate control outputs
         if: success() || failure()
         run: |
-          docker run -p 80:80 -v $GITHUB_WORKSPACE:/V2DL3 $DOCKER_IMAGE /bin/bash -c \
-          "cd V2DL3 && git checkout -t origin/main && pip install . && bash utils/vegas_docker_test_runs.sh OUTDIR=$CONTROL_DIR"
+          docker run -p 80:80 -v $GITHUB_WORKSPACE:/V2DL3 $DOCKER_IMAGE /bin/bash -c "\
+          cd V2DL3 \
+          && git config --global --add safe.directory /V2DL3 \
+          && git checkout -t origin/main \
+          && pip install . \
+          && bash utils/vegas_docker_test_runs.sh OUTDIR=$CONTROL_DIR
+          "
 
       - name: Install fitsdiff
         run: |
