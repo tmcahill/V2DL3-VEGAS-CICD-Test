@@ -35,11 +35,16 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
+      - name: test
+        run:
+          ls ./
+          cat utils/v2dl3-vegas.yml
+
       #- name: flake8
       - name: Checkout main branch
         uses: actions/checkout@v3
-          with:
-            ref: main
+        with:
+          ref: main
         run:
           ls ./
           cat utils/v2dl3-vegas.yml
