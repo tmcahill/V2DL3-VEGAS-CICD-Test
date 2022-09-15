@@ -24,7 +24,7 @@ jobs:
     # Environment vars for the runner
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
+      DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
       DOCKER_IMAGE: veritasacc/vegas:v2dl3-CI
       # New 'test' outputs
       NEW_DIR: ./new-fits
