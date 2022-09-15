@@ -51,7 +51,7 @@ jobs:
           cd V2DL3 \
           && bash utils/vegas_docker_test_runs.sh OUTDIR=$NEW_DIR \
           "
-          cp $NEW_DIR ../$NEW_DIR
+          cp -r $NEW_DIR ../$NEW_DIR
           sudo rm -rf $GITHUB_WORKSPACE
 
       - name: Checkout main branch
@@ -61,19 +61,19 @@ jobs:
 
       - name: Install main branch and generate control outputs
         run: |
-          cp ../utils/vegas_docker_test_runs.sh new_vegas_docker_test_runs_static.sh
+          cp ../utils/vegas_docker_test_runs_static.sh vegas_docker_test_runs_static.sh
           docker run -p 80:80 -v $GITHUB_WORKSPACE:/V2DL3 $DOCKER_IMAGE /bin/bash -c "\
           cd V2DL3 \
-          && bash new_vegas_docker_test_runs_static.sh OUTDIR=$CONTROL_DIR
+          && bash vegas_docker_test_runs_static.sh OUTDIR=$CONTROL_DIR \
           "
-          cp $CONTROL_DIR ../$CONTROL_DIR
+          cp -r $CONTROL_DIR ../$CONTROL_DIR
 
       - name: Install fitsdiff
         run: |
           sudo apt-get install -qq astropy-utils
 
+        # sudo chown -R 777 ../$NEW_DIR
+        # sudo chown -R 777 ../$CONTROL_DIR
       - name: Compare fits outputs
         run: |
-          sudo chown -R 777 $NEW_DIR
-          sudo chown -R 777 $CONTROL_DIR
           bash utils/compare_fits_dirs.sh ../$NEW_DIR ../$CONTROL_DIR
