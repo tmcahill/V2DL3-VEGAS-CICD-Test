@@ -29,3 +29,5 @@ done
 if [ "$DIFF_FOUND" = true ] ; then
     exit 1
 fi
+
+echo "Fits files contain no differences."
