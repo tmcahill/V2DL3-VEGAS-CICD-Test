@@ -61,10 +61,10 @@ jobs:
 
       - name: Install main branch and generate control outputs
         run: |
-          cp ../utils/vegas_docker_test_runs_static.sh vegas_docker_test_runs_static.sh
+          cp ../vegas_docker_test_runs_static.sh utils/vegas_docker_test_runs_static.sh
           docker run -p 80:80 -v $GITHUB_WORKSPACE:/V2DL3 $DOCKER_IMAGE /bin/bash -c "\
           cd V2DL3 \
-          && bash vegas_docker_test_runs_static.sh OUTDIR=$CONTROL_DIR \
+          && bash utils/vegas_docker_test_runs_static.sh OUTDIR=$CONTROL_DIR \
           "
           cp -r $CONTROL_DIR ../$CONTROL_DIR
 
