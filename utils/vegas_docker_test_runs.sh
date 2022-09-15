@@ -38,7 +38,7 @@ export LANG=C.UTF-8
 . /software/ROOT_build/bin/thisroot.sh
 
 set -e
-echo "Installing v2dl3-vegas with changes..."
+echo "Installing v2dl3-vegas..."
 pip install . 
 set +e
 

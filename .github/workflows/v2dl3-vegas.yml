@@ -21,9 +21,10 @@ jobs:
   v2dl3-vegas:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    # Environment vars for the runner
     env:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
       DOCKER_IMAGE: veritasacc/vegas:v2dl3-CI
       # New 'test' outputs
       NEW_DIR: ./new-fits
@@ -36,53 +37,38 @@ jobs:
       - name: Checkout new branch
         uses: actions/checkout@v3
 
-      - name: test
-        run: |
-          ls ./
-          cat .github/workflows/CI.yml
-
       #- name: flake8
+      
+      - name: Pull docker image
+        run: |
+          docker login --username=$DOCKER_USERNAME --password=$DOCKER_TOKEN
+          docker pull $DOCKER_IMAGE
+
+      - name: Install new branch and generate .fits outputs
+        run: |
+          docker run -p 80:80 -v $GITHUB_WORKSPACE:/V2DL3 $DOCKER_IMAGE /bin/bash -c "\
+          cd V2DL3 \
+          && bash utils/vegas_docker_test_runs.sh OUTDIR=$NEW_DIR \
+          "
+
       - name: Checkout main branch
         uses: actions/checkout@v3
         with:
           ref: main
-      
-      - name: test2
+
+      - name: Install main branch and generate control outputs
         run: |
-          ls ./
-          cat .github/workflows/CI.yml
+          docker run -p 80:80 -v $GITHUB_WORKSPACE:/V2DL3 $DOCKER_IMAGE /bin/bash -c "\
+          cd V2DL3 \
+          && bash utils/vegas_docker_test_runs.sh OUTDIR=$CONTROL_DIR
+          "
 
-      # Runs a single command using the runners shell
-      # - name: Pull docker image
-      #   run: |
-      #     docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD
-      #     docker pull $DOCKER_IMAGE
+      - name: Install fitsdiff
+        run: |
+          sudo apt-get install -qq astropy-utils
 
-      # - name: Install new branch and generate .fits outputs
-      #   run: |
-      #     docker run -p 80:80 -v $GITHUB_WORKSPACE:/V2DL3 $DOCKER_IMAGE /bin/bash -c "\
-      #     cd V2DL3 \
-      #     && bash utils/vegas_docker_test_runs.sh OUTDIR=$NEW_DIR \
-      #     "
-
-      # - name: Install main branch and generate control outputs
-
-      #   if: success() || failure()
-      #   run: |
-      #     docker run -p 80:80 -v $GITHUB_WORKSPACE:/V2DL3 $DOCKER_IMAGE /bin/bash -c "\
-      #     cd V2DL3 \
-      #     && git config --global --add safe.directory /V2DL3 \
-      #     && git checkout -t origin/main \
-      #     && pip install . \
-      #     && bash utils/vegas_docker_test_runs.sh OUTDIR=$CONTROL_DIR
-      #     "
-
-      # - name: Install fitsdiff
-      #   run: |
-      #     sudo apt-get install -qq astropy-utils
-
-      # - name: Compare fits outputs
-      #   run: |
-      #     sudo chown -R 777 $NEW_DIR
-      #     sudo chown -R 777 $CONTROL_DIR
-      #     bash utils/compare_fits_dirs.sh $NEW_DIR $CONTROL_DIR
+      - name: Compare fits outputs
+        run: |
+          sudo chown -R 777 $NEW_DIR
+          sudo chown -R 777 $CONTROL_DIR
+          bash utils/compare_fits_dirs.sh $NEW_DIR $CONTROL_DIR
