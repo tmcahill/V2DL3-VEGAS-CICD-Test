@@ -125,8 +125,8 @@ if args.ea_dir is not None:
 # Check runlist overwrite
 if os.path.exists(args.output):
     if not args.no_prompt:
-        response = input(str(args.output) +
-                         " already exists. Enter 'y' to overwrite.\n")
+        response = input(str(args.output) 
+                         + " already exists. Enter 'y' to overwrite.\n")
         if response != "y" and response != "'y'":
             exit(0)
 
