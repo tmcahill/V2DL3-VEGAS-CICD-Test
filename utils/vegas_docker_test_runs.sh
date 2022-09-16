@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # This script should be called from $GITHUB_WORKSPACE (actions/checkout@v3) mounted within a Docker
 # image which has been built from the recipe in this directory.
 
@@ -37,10 +39,8 @@ export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
 . /software/ROOT_build/bin/thisroot.sh
 
-set -e
 echo "Installing v2dl3-vegas..."
 pip install . 
-set +e
 
 # ---------- TEST RUNS -----------
 function run_tests() 
