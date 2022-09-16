@@ -58,8 +58,8 @@ function run_tests()
     echo "-------------------------------"
     echo "Point-like 2 - Extra flags"
     echo "-------------------------------"
-    python3 utils/vegas_runlister.py runlist2.txt -rd $STAGE5_DIR -e $EA_POINTLIKE_2 --no_prompt
-    v2dl3-vegas $EXTRA_FLAGS --point-like -l runlist.txt $OUTDIR/point-like-2
+    python3 utils/vegas_runlister.py runlist.txt -rd $STAGE5_DIR -e $EA_POINTLIKE_2 --no_prompt
+    v2dl3-vegas $EXTRA_FLAGS --point-like -l runlist2.txt $OUTDIR/point-like-2
 
     # Coming in King PSF update....
 
