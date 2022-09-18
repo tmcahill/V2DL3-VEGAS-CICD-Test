@@ -220,7 +220,7 @@ def cli(
             fname_base = os.path.splitext(os.path.basename(st5_str))[0]
             datasource = loadROOTFiles(st5_str, ea_str, "VEGAS",
                                        event_classes=event_classes,
-                                       #save_msw_msl=save_msw_msl,
+                                       # save_msw_msl=save_msw_msl,
                                        )
 
             datasource.set_irfs_to_store(irfs_to_store)
