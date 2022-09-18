@@ -7,6 +7,7 @@ from pyV2DL3.generateObsHduIndex import create_obs_hdu_index_file
 from pyV2DL3.vegas.EventClass import EventClass
 
 
+# A new comment!
 # In event_class_mode, The user can provide multiple EAs per tag to define the event classes for that group.
 def runlist_to_file_pair(rl_dict, event_class_mode=False):
     eas = rl_dict["EA"]
