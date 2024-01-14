@@ -32,3 +32,4 @@ When the user chooses `event_class_mode`, multiple effective area files may be p
 This is useful for splitting events from a run into multiple datasets for joint fitting. For example, disjoint signal and background classes based on MSW as developed by Alisha Chromey and Amanda Weinstein in "4DMLM" analysis [Example](https://github.com/VERITAS-Observatory/4DMLM-Analysis/blob/main/notebooks/crab-115-runs/JointCrab3DAnalysis2Events.ipynb)
 
 Currently, event_class_mode only sorts to multiple event classes based on MSW intervals.
+
